@@ -4,7 +4,7 @@
 # 正则问题, 比如文件中有空格
 import os.path
 
-from src.filter import searcher
+from src.filter.searcher import *
 import defaultvalues
 from src.functioner import FileListProcessor
 import src.functioner.functioner
@@ -17,32 +17,22 @@ def print_file_list2txt(file_list, target_file):
 
 
 if __name__ == '__main__':
+    flag = SearchFlag()
+    dir = r"/Users/akunda/project/cmake-template/src/"
+    list = []
+    traverse_target_dir(flag, dir, list)
 
-
-
-    src_dir_path = "/Users/akunda/Nutstore_Files/my_nut/blog/source/_posts/"
-    is_recur = True
-    is_include_dir = False
-    include_list = ["md"]
-    exclude_list = ["/.", "~$", " "] # defaultvalues.EXLUDE_LIST
-    comparator = defaultvalues.SIZE
-    is_reverse = False
-    target_dir = defaultvalues.TARGET_DIR
-
-    s = searcher.Searcher(src_dir_path=src_dir_path,
-                          is_recur=is_recur,
-                          is_include_dir=is_include_dir,
-                          include_list=include_list,
-                          exclude_list=exclude_list,
-                          comparator=comparator,
-                          is_reverse=is_reverse
-                          )
-    l = s.get_path_list()
+    include_list = [""]
+    exclude_list = ["/."]
+    filt_list(file_list=list, include_list=include_list, exclude_list=exclude_list)
+    sort_list(list, "NAME")
+    for l in list:
+        print(l)
 
 
     # print_file_list2txt(l, os.path.join(target_dir, "filelist.txt"))
 
-    f = FileListProcessor.FileListProcessor(target_path=target_dir, \
+    f = FileListProcessor.FileListProcessor(target_path=dir, \
                                             file_list=l, function=FileListProcessor.txt_replace)
     f.run("password: wzqdiary", "password: ")
 
