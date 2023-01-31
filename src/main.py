@@ -5,9 +5,7 @@
 import os.path
 
 from src.filter.searcher import *
-import defaultvalues
-from src.functioner import FileListProcessor
-import src.functioner.functioner
+from src.functioner import function
 
 
 def print_file_list2txt(file_list, target_file):
@@ -17,51 +15,26 @@ def print_file_list2txt(file_list, target_file):
 
 
 if __name__ == '__main__':
-    flag = SearchFlag()
-    dir = r"/Users/akunda/project/cmake-template/src/"
-    list = []
-    traverse_target_dir(flag, dir, list)
+    is_single_file = False
+    if is_single_file:
+        print("single file")
+        function.pdf_bookmark2md_title \
+            ("/Users/akunda/Downloads/C++20实践入门 第六版.pdf")
 
-    include_list = [""]
-    exclude_list = ["/."]
-    filt_list(file_list=list, include_list=include_list, exclude_list=exclude_list)
-    sort_list(list, "NAME")
-    for l in list:
-        print(l)
+    else:
+        flag = SearchFlag()
+        flag.file_needed = True
+        flag.dir_needed = True
+        flag.is_recur = True
+        dir = r"/Users/akunda/Downloads/qq_download"
+        include_list = [""]
+        exclude_list = ["/."]
 
+        list = []
+        traverse_target_dir(flag, dir, list)
+        filt_list(file_list=list, include_list=include_list, exclude_list=exclude_list)
+        sort_list(list, "SIZE")
 
-    # print_file_list2txt(l, os.path.join(target_dir, "filelist.txt"))
+        for file in list:
+            print(function.get_size(file))
 
-    f = FileListProcessor.FileListProcessor(target_path=dir, \
-                                            file_list=l, function=FileListProcessor.txt_replace)
-    f.run("password: wzqdiary", "password: ")
-
-    # src_dir_path = "/Users/akunda/Downloads/gifs/俺と妹の一日/"
-    # is_recur = False
-    # is_include_dir = True
-    # include_list = []
-    # exclude_list = defaultvalues.EXLUDE_LIST
-    # comparator = defaultvalues.NAME
-    # is_reverse = False
-    # target_dir = defaultvalues.TARGET_DIR
-    #
-    # s = searcher.Searcher(src_dir_path=src_dir_path,
-    #                       is_recur=is_recur,
-    #                       is_include_dir=is_include_dir,
-    #                       include_list=include_list,
-    #                       exclude_list=exclude_list,
-    #                       comparator=comparator,
-    #                       is_reverse=is_reverse
-    #                       )
-    # l = s.get_path_list()
-    # for i, dir in enumerate(l):
-    #     dir_s = searcher.Searcher(src_dir_path=dir,
-    #                               is_recur=False,
-    #                               is_include_dir=False,
-    #                               include_list=["png", "jpg"],
-    #                               exclude_list=defaultvalues.EXLUDE_LIST,
-    #                               comparator=defaultvalues.NAME,
-    #                               is_reverse=False
-    #                               )
-    #     dir_l = dir_s.get_path_list()
-    #     src.functioner.functioner.imgs2gif(dir_l, target_dir + i.__str__() + ".gif")
