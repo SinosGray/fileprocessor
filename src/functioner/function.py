@@ -2,6 +2,7 @@ import shutil
 import os
 import imageio
 from PyPDF2 import PdfFileReader as pdf_read
+import PyPDF2
 
 
 def fun_copy(file, target_dir):
@@ -85,6 +86,21 @@ def pdf_bookmark2md_title(pdf_path):
     getter = PdfBookmarkGetter()
     getter.get_bookmark(pdf_path)
     md_reg_bookmark()
+
+
+def merge_pdf(pdf_list, target_file_path):
+    merger = PyPDF2.PdfFileMerger()
+
+    # Define the path to the folder with the PDF files
+    path_to_files = r'pdf_files/'
+
+    # Get the file names in the directory
+    for pdf in pdf_list:
+        merger.append(pdf)
+
+    # Write out the merged PDF file
+    merger.write(target_file_path)
+    merger.close()
 # register table
 # regist    fun_name need_copy need_list
 # FUN_COPY = [fun_copy]

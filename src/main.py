@@ -24,17 +24,16 @@ if __name__ == '__main__':
     else:
         flag = SearchFlag()
         flag.file_needed = True
-        flag.dir_needed = True
+        flag.dir_needed = False
         flag.is_recur = True
-        dir = r"/Users/akunda/Downloads/qq_download"
-        include_list = [""]
+        dir = r"/Users/akunda/Downloads/模电/"
+        include_list = ["pdf"]
         exclude_list = ["/."]
 
         list = []
         traverse_target_dir(flag, dir, list)
         filt_list(file_list=list, include_list=include_list, exclude_list=exclude_list)
-        sort_list(list, "SIZE")
+        sort_list(list, "NAME")
 
-        for file in list:
-            print(function.get_size(file))
+        function.merge_pdf(list, "/Users/akunda/Downloads/模电/pdfs.pdf")
 
