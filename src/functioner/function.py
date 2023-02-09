@@ -45,7 +45,7 @@ def erase_space(str):
 
 
 class PdfBookmarkGetter:
-    bookmark_txt = "/Users/akunda/project/fileprocessor/src/functioner/目录.txt"
+    bookmark_txt = "目录.txt"
 
     def __init__(self):
         self.directory_str = ""

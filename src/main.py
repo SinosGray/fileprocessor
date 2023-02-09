@@ -26,7 +26,7 @@ if __name__ == '__main__':
         flag.file_needed = True
         flag.dir_needed = False
         flag.is_recur = True
-        dir = r"/Users/akunda/Downloads/模电/"
+        dir = r"/Users/akunda/Downloads/"
         include_list = ["pdf"]
         exclude_list = ["/."]
 
@@ -35,5 +35,5 @@ if __name__ == '__main__':
         filt_list(file_list=list, include_list=include_list, exclude_list=exclude_list)
         sort_list(list, "NAME")
 
-        function.merge_pdf(list, "/Users/akunda/Downloads/模电/pdfs.pdf")
+        function.merge_pdf(list, "/Users/akunda/Downloads/")
 
