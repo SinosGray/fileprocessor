@@ -27,7 +27,7 @@ if __name__ == '__main__':
         flag.file_needed = True
         flag.dir_needed = False
         flag.is_recur = True
-        dir = r"/Users/akunda/project/fileprocessor/targetdir"
+        dir = r"/Users/akunda/project/fileprocessor/targetdir/"
         include_list = ["md"]
         exclude_list = ["/."]
 
