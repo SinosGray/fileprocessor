@@ -6,6 +6,7 @@ import os.path
 
 from src.filter.searcher import *
 from src.functioner import function
+from src.functioner import tfidf
 
 
 def print_file_list2txt(file_list, target_file):
@@ -17,23 +18,24 @@ def print_file_list2txt(file_list, target_file):
 if __name__ == '__main__':
     is_single_file = False
     if is_single_file:
-        print("single file")
-        function.pdf_bookmark2md_title \
-            ("/Users/akunda/Downloads/C++20实践入门 第六版.pdf")
+        print(function.remove_symbols_in_str(r"jwbdsafcuisabdiuf23e41230@#${adsfas!@{1(asda)f"))
+        # function.pdf_bookmark2md_title \
+        #     ("/Users/akunda/Downloads/游戏编程模式.pdf")
 
     else:
         flag = SearchFlag()
         flag.file_needed = True
         flag.dir_needed = False
         flag.is_recur = True
-        dir = r"/Users/akunda/Downloads/"
-        include_list = ["pdf"]
+        dir = r"/Users/akunda/project/fileprocessor/targetdir"
+        include_list = ["md"]
         exclude_list = ["/."]
 
         list = []
         traverse_target_dir(flag, dir, list)
         filt_list(file_list=list, include_list=include_list, exclude_list=exclude_list)
         sort_list(list, "NAME")
+        tfidf.change_keyword_in_md(list)
 
-        function.merge_pdf(list, "/Users/akunda/Downloads/")
+
 

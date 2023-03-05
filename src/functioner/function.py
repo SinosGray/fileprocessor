@@ -3,6 +3,25 @@ import os
 import imageio
 from PyPDF2 import PdfFileReader as pdf_read
 import PyPDF2
+from PIL import Image
+import re
+
+
+def remove_symbols_in_str(str):
+    return re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", " ", str)
+
+
+def images2pdf(image_list):
+    images = [
+        Image.open(image)
+        for image in image_list
+    ]
+
+    pdf_path = "images2pdf.pdf"
+
+    images[0].save(
+        pdf_path, "PDF", resolution=100.0, save_all=True, append_images=images[1:]
+    )
 
 
 def fun_copy(file, target_dir):
@@ -101,6 +120,8 @@ def merge_pdf(pdf_list, target_file_path):
     # Write out the merged PDF file
     merger.write(target_file_path)
     merger.close()
+
+
 # register table
 # regist    fun_name need_copy need_list
 # FUN_COPY = [fun_copy]
@@ -134,3 +155,7 @@ def merge_pdf(pdf_list, target_file_path):
 #         # if self._is_need_copy:
 #         #     for file in self._origin_file_list:
 #         #         self.copy_file_to_target_dir(self._target_dir, file)
+
+def print_list(list):
+    for path in list:
+        print(path)
