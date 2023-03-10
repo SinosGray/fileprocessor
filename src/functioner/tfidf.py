@@ -12,7 +12,7 @@ from tqdm import tqdm
 # Term Frequency, Inverse Document Frequency.
 # 字詞的重要性隨著它在文件中出現的次數成正比增加，但同時會隨著它在語料庫中出現的頻率成反比下降。
 
-remove_word = ["截屏"]
+remove_words = ["截屏"]
 TF_THREHOLD = 3
 IDF_THREHOLD = 1
 
@@ -52,11 +52,26 @@ def tfidf(word, wordlist, dic):
     return tf(word, wordlist) * idf(word, dic)
 
 
+def pattern_search(string, pattern):
+    index = 0
+    while index < len(string) - len(pattern):
+        index = string.find(pattern, index, len(string))
+        if index == -1:
+            break
+        yield index
+        index += len(pattern) - 1
+
+
 def cleanup_doc(str):
     stopset = set(stopwords.words('english'))
-    stopset.update(remove_word)
     tokens = nltk.word_tokenize(remove_symbols_in_str(str))
     cleanup = [token.lower() for token in tokens if token.lower() not in stopset and len(token) > 2]
+    for token in cleanup:
+        for word in remove_words:
+            if word in token or token.isdigit():
+                cleanup.remove(token)
+
+
     return cleanup
 
 

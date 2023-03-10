@@ -7,23 +7,8 @@ from PIL import Image
 import re
 
 
-
-
 def remove_symbols_in_str(str):
     return re.sub(u"([^\u4e00-\u9fa5\u0030-\u0039\u0041-\u005a\u0061-\u007a])", " ", str)
-
-
-def images2pdf(image_list):
-    images = [
-        Image.open(image)
-        for image in image_list
-    ]
-
-    pdf_path = "images2pdf.pdf"
-
-    images[0].save(
-        pdf_path, "PDF", resolution=100.0, save_all=True, append_images=images[1:]
-    )
 
 
 def fun_copy(file, target_dir):
@@ -124,40 +109,35 @@ def merge_pdf(pdf_list, target_file_path):
     merger.close()
 
 
-# register table
-# regist    fun_name need_copy need_list
-# FUN_COPY = [fun_copy]
-# PRINT_SIZE = [print_size]
-# PRINT_NAME = [print_name]
-# IMG2GIF = [imgs2gif]
-# TXT_REPLACE = [txt_replace]
+def images2pdf(image_list, pdf_path):
+    images = [
+        Image.open(image)
+        for image in image_list
+    ]
+
+    images[0].save(
+        pdf_path, "PDF", resolution=100.0, save_all=True, append_images=images[1:]
+    )
 
 
-# TODO
-# change args
-# class FileListProcessor:
-#
-#     def __init__(self, target_path, file_list, function):
-#         self._target_path = target_path
-#         self._origin_file_list = file_list
-#         # self._copy_file_list = os.listdir(target_path)
-#         self._function = function
-#
-#     # def copy_file_to_target_dir(self, target_dir_path, file_path):
-#     #     return shutil.copy2(file_path, target_dir_path)
-#
-#     # def copy_files_get_new_list(self, target_dir_path, file_list):
-#     #     for file in file_list:
-#     #         shutil.copy2(file, target_dir_path)
-#     #     self._copy_file_list = os.listdir(target_dir_path)
-#
-#     def run(self, *args):
-#         for file in self._origin_file_list:
-#             self._function(file, *args)
-#         # if self._is_need_copy:
-#         #     for file in self._origin_file_list:
-#         #         self.copy_file_to_target_dir(self._target_dir, file)
+def imgs2img(img_path_list, output_path):
+    # 2 imgs to 1 img horizontally
+    img_list = [Image.open(fn) for fn in img_path_list]
+    if len(img_list) == 1:
+        img_list[0].save(output_path)
+    width, height = img_list[0].size
+    result = Image.new(img_list[0].mode, (width * len(img_list), height))
+    for i, img in enumerate(img_list):
+        result.paste(img, box=(i * width, 0))
+    result.save(output_path)
 
-def print_list(list):
-    for path in list:
-        print(path)
+
+def merge_horizontal_imgs(file_list: list, mid_path_dir):
+    '''
+    :param file_list: imgs
+    :param mid_path_dir: output dir
+    :return: merged imgs in mid_path_dir
+    '''
+    imgs2img([file_list[0]], mid_path_dir + "{:0>3d}.jpg".format(0))
+    for i in range(1, len(file_list), 2):
+        imgs2img(file_list[i:i + 2], mid_path_dir + "{:0>3d}.jpg".format(i))
