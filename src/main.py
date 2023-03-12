@@ -5,8 +5,8 @@
 import os.path
 
 from src.filter.searcher import *
-from src.functioner import function
-from src.functioner import tfidf
+from src.functioner.function import *
+from src.functioner.tfidf import change_keyword_in_md
 
 
 def print_file_list2txt(file_list, target_file):
@@ -15,24 +15,25 @@ def print_file_list2txt(file_list, target_file):
             f.write(file_path + "\n")
 
 
-def get_file_list(srcdir,
-                  file_needed=True,
-                  dir_needed=False,
-                  is_recur=True,
-                  ):
-    flag = SearchFlag()
-    flag.file_needed = file_needed
-    flag.dir_needed = dir_needed
-    flag.is_recur = is_recur
-    include_list = ["jpg"]
+def get_file_list(src_dir,
+                  search_flag
+                  ) -> list:
+    include_list = ["md"]
     exclude_list = ["/."]
 
-    list = []
-    traverse_target_dir(flag, srcdir, list)
-    filt_list(file_list=list, include_list=include_list, exclude_list=exclude_list)
-    sort_list(list, "NAME")
-    return list
+    file_list = []
+    traverse_target_dir(search_flag, src_dir, file_list)
+    filt_list(file_list=file_list, include_list=include_list, exclude_list=exclude_list)
+    sort_list(file_list, "NAME")
+    return file_list
 
 
 if __name__ == '__main__':
-    get_file_list(srcdir=r"/Users/akunda/Downloads/netdisk/只狼/sekiro")
+    search_flag = SearchFlag()
+    search_flag.file_needed = True
+    search_flag.dir_needed = False
+    search_flag.is_recur = True
+
+    # file_list = get_file_list("/Users/akunda/project/fileprocessor/targetdir", search_flag)
+    # change_keyword_in_md(file_list)
+    pdf_bookmark2md_title("/Users/akunda/Downloads/代码大全2中文版 2.pdf")

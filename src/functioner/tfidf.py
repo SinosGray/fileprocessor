@@ -2,7 +2,7 @@
 import math
 import nltk
 from nltk.corpus import stopwords
-from src.functioner.function import remove_symbols_in_str
+from src.functioner.function import get_removed_symbols_str
 import src.functioner.function as func
 import yaml
 from src.functioner.test import debug
@@ -64,7 +64,7 @@ def pattern_search(string, pattern):
 
 def cleanup_doc(str):
     stopset = set(stopwords.words('english'))
-    tokens = nltk.word_tokenize(remove_symbols_in_str(str))
+    tokens = nltk.word_tokenize(get_removed_symbols_str(str))
     cleanup = [token.lower() for token in tokens if token.lower() not in stopset and len(token) > 2]
     for token in cleanup:
         for word in remove_words:
